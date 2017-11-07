@@ -278,3 +278,11 @@ config TEGRA_PARTITION
 	help
 	  Say Y here if you would like to be able to read the hard disk
 	  partition table format used by NVIDIA Tegra machines.
+
+config BIGSYS
+	bool "Big System repartition support"
+	depends on EFI_PARTITION
+	help
+	  Say Y here if you would like to repartition the Samsung
+	  Galaxy Tab 10.1. The system and cache partition are combined
+	  into one large system partition.
