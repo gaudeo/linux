@@ -122,4 +122,6 @@ source "drivers/staging/wfx/Kconfig"
 
 source "drivers/staging/a500-ec/Kconfig"
 
+source "drivers/staging/p4wifi/Kconfig"
+
 endif # STAGING
