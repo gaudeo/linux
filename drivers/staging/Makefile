@@ -51,3 +51,4 @@ obj-$(CONFIG_KPC2000)		+= kpc2000/
 obj-$(CONFIG_QLGE)		+= qlge/
 obj-$(CONFIG_WFX)		+= wfx/
 obj-$(CONFIG_ACER_A500_EC_MFD)	+= a500-ec/
+obj-$(CONFIG_P4WIFI)		+= p4wifi/
