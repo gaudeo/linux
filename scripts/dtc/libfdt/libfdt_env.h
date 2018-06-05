@@ -93,4 +93,6 @@ static inline size_t fdt_strnlen(const char *string, size_t max_count)
 
 #endif /* __APPLE__ */
 
+#undef memset
+
 #endif /* LIBFDT_ENV_H */
