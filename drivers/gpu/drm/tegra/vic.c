@@ -32,7 +32,7 @@ struct vic {
 	bool booted;
 
 	void __iomem *regs;
-	struct host1x_client client;
+	struct tegra_drm_client client;
 	struct device *dev;
 	struct clk *clk;
 	struct reset_control *rst;
@@ -131,6 +131,10 @@ static int vic_probe(struct platform_device *pdev)
 	struct vic *vic;
 	int err;
 
+	 /* xxx: re-implement falcon allocations */
+	dev_err(dev, "unsupported by grate kernel\n");
+	return 0;
+
 	vic = devm_kzalloc(dev, sizeof(*vic), GFP_KERNEL);
 	if (!vic)
 		return -ENOMEM;
@@ -164,9 +168,6 @@ static int vic_probe(struct platform_device *pdev)
 	vic->falcon.dev = dev;
 	vic->falcon.regs = vic->regs;
 
-	WARN_ON(1); /* xxx: re-implement falcon allocations */
-	return -ENODEV;
-
 	err = falcon_init(&vic->falcon);
 	if (err < 0)
 		return err;
@@ -174,10 +175,10 @@ static int vic_probe(struct platform_device *pdev)
 	platform_set_drvdata(pdev, vic);
 
 	INIT_LIST_HEAD(&vic->client.list);
-	vic->client.dev = dev;
+	vic->client.base.dev = dev;
 	vic->dev = dev;
 
-	err = host1x_client_register(&vic->client);
+	err = host1x_client_register(&vic->client.base);
 	if (err < 0) {
 		dev_err(dev, "failed to register host1x client: %d\n", err);
 		goto exit_falcon;
@@ -193,7 +194,7 @@ static int vic_probe(struct platform_device *pdev)
 	return 0;
 
 unregister_client:
-	host1x_client_unregister(&vic->client);
+	host1x_client_unregister(&vic->client.base);
 exit_falcon:
 	falcon_exit(&vic->falcon);
 
@@ -205,7 +206,9 @@ static int vic_remove(struct platform_device *pdev)
 	struct vic *vic = platform_get_drvdata(pdev);
 	int err;
 
-	err = host1x_client_unregister(&vic->client);
+	return 0;
+
+	err = host1x_client_unregister(&vic->client.base);
 	if (err < 0) {
 		dev_err(&pdev->dev, "failed to unregister host1x client: %d\n",
 			err);
