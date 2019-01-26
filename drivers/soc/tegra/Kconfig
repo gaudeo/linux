@@ -132,6 +132,7 @@ config SOC_TEGRA_FLOWCTRL
 	bool
 
 config SOC_TEGRA_PMC
+	select GENERIC_PINCONF
 	bool
 
 config SOC_TEGRA_POWERGATE_BPMP
