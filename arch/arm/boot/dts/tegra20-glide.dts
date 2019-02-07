@@ -552,7 +552,7 @@
 		};
 	};
 
-	i2c@7000d000 {
+	i2c@7000c500 {
 		status = "okay";
 		clock-frequency = <400000>;
 
