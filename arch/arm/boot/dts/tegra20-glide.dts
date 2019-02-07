@@ -1237,18 +1237,18 @@
 
 			display-timings {
 				timing {
-					clock-frequency = <24000000>;
+					clock-frequency = <25000000>;
 					hactive = <480>;
 					vactive = <800>;
 					hfront-porch = <16>;
-					vfront-porch = <28>;
-					hback-porch = <14>;
-					vback-porch = <1>;
+					vfront-porch = <27>; // 28
+					hback-porch = <16>;
+					vback-porch = <2>; // 1
 					hsync-len = <2>;
 					vsync-len = <2>;
 					hsync-active = <0>;
 					vsync-active = <0>;
-					nvidia,h-ref-to-sync = <0>;
+					nvidia,h-ref-to-sync = <1>; // 0
 					nvidia,v-ref-to-sync = <1>;
 				};
 			};
