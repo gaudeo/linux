@@ -655,7 +655,7 @@
 					regulator-max-microvolt = <1800000>;
 				};
 
-				ldo4 {
+				vbus1_reg: ldo4 {
 					regulator-name = "nvvdd_ldo4,vap_usb_3v3";
 					regulator-min-microvolt = <3300000>;
 					regulator-max-microvolt = <3300000>;
@@ -1107,18 +1107,18 @@
 		nvidia,lp0-vec = <0x1819E000 8192>;
 	};
 
-	// Enabling this makes device to hang at boot
-#if 0
 	usb@c5000000 {
 		compatible = "nvidia,tegra20-udc";
 		status = "okay";
-		dr_mode = "otg";
+		dr_mode = "peripheral"; // otg
 	};
 
 	usb-phy@c5000000 {
 		status = "okay";
+		vbus-supply = <&vbus1_reg>;
 	};
 
+#if 0
 	usb@c5004000 {
 		status = "okay";
 	};
@@ -1127,6 +1127,7 @@
 		status = "okay";
 	};
 #endif
+
 	wifi_pwrseq: bcm4330_pwrseq {
 		compatible = "mmc-pwrseq-simple";
 		clocks = <&tegra_car TEGRA20_CLK_BLINK>;
