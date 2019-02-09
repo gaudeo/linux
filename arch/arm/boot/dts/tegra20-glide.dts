@@ -819,6 +819,8 @@
 		max17043@36 {
 			compatible = "maxim,max17040";
 			reg = <0x36>;
+			interrupt-parent = <&gpio>;
+			interrupts = <TEGRA_GPIO(I, 5) IRQ_TYPE_LEVEL_HIGH>;
 		};
 	};
 
