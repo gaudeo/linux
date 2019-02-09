@@ -1230,7 +1230,7 @@
 			spi-cpha;
 			vdd3-supply = <&vlcd_1v8>;
 			vci-supply = <&vlcd_3v0>;
-			reset-gpios = <&gpio TEGRA_GPIO(C, 1) GPIO_ACTIVE_HIGH>;
+			reset-gpios = <&gpio TEGRA_GPIO(C, 1) GPIO_ACTIVE_LOW>;
 			panel-width-mm = <52>;
 			panel-height-mm = <87>;
 			/* 25 + 1 for regulator */
