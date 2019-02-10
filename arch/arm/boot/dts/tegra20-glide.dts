@@ -762,6 +762,8 @@
 					regulator-name = "nvvdd_ldo20,t_key_3v0";
 					regulator-min-microvolt = <3000000>;
 					regulator-max-microvolt = <3000000>;
+					regulator-always-on;
+					regulator-boot-on;
 				};
 
 				out5v {
@@ -1001,10 +1003,14 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		/* Not supported - no driver */
-		/* melfas-touchkey@20 {
+		melfas-touchkey@20 {
+			compatible = "mcs5080_touchkey";
 			reg = <0x20>;
-		}; */
+			interrupt-parent = <&gpio>;
+			interrupts = <TEGRA_GPIO(Q, 4) IRQ_TYPE_EDGE_FALLING>;
+			key_maxval = <4>;
+			linux,code = <KEY_MENU KEY_HOME KEY_BACK KEY_SEARCH>;
+		};
 	};
 
 	i2c@20 {
