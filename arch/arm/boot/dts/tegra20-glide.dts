@@ -1107,6 +1107,14 @@
 		kbd {
 			label = "Keyboard backlight";
 			gpios = <&gpio TEGRA_GPIO(L, 5) GPIO_ACTIVE_HIGH>;
+			/*
+			 * Looks like there's no way to specify GPIO for trigger in DT.
+			 * So keyboard hall GPIO is PW3, which number is 179.
+			 * (See TEGRA_GPIO() macro)
+			 * To enable this trigger:
+			 * echo gpio > /sys/class/leds/Keyboard\ backlight/trigger
+			 * echo 179 > /sys/class/leds/Keyboard\ backlight/gpio
+			 */
 			linux,default-trigger = "gpio";
 			default-state = "off";
 		};
@@ -1231,6 +1239,13 @@
 			gpios = <&gpio TEGRA_GPIO(Q, 2) GPIO_ACTIVE_LOW>;
 			linux,code = <KEY_VOLUMEDOWN>;
 			debounce-interval = <10>;
+		};
+
+		hall {
+			label = "Keyboard slide";
+			gpios = <&gpio TEGRA_GPIO(W, 3) GPIO_ACTIVE_LOW>;
+			linux,input-type = <EV_SW>;
+			linux,code = <SW_KEYPAD_SLIDE>;
 		};
 	};
 
