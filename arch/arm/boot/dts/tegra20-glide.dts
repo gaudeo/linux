@@ -1101,6 +1101,17 @@
 		};
 	};
 
+	leds {
+		compatible = "gpio-leds";
+
+		kbd {
+			label = "Keyboard backlight";
+			gpios = <&gpio TEGRA_GPIO(L, 5) GPIO_ACTIVE_HIGH>;
+			linux,default-trigger = "gpio";
+			default-state = "off";
+		};
+	};
+
 	pmc@7000e400 {
 		nvidia,invert-interrupt;
 		nvidia,suspend-mode = <0>;
