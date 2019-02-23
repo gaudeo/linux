@@ -1190,8 +1190,6 @@
 			reg = <1>;
 			comaptible = "brcm,bcm4329-fmac";
 			interrupt-parent = <&gpio>;
-			interrupts = <TEGRA_GPIO(S, 2) IRQ_TYPE_EDGE_BOTH>;
-			interrupt-names = "host-wake";
 		};
 
 	};
