@@ -868,6 +868,7 @@
 			#gpio-cells = <2>;
 
 			wlf,ldo1ena =  <&gpio TEGRA_GPIO(X, 5) GPIO_ACTIVE_HIGH>;
+			wlf,gpio-cfg = <0xA101 0 0 0 0 0 0 0 0 0 0>;
 
 		};
 	};
@@ -1127,6 +1128,24 @@
 			 * echo 179 > /sys/class/leds/Keyboard\ backlight/gpio
 			 */
 			linux,default-trigger = "gpio";
+			default-state = "off";
+		};
+
+		micbias1 {
+			label = "MICBIAS1";
+			gpios = <&gpio TEGRA_GPIO(X, 6) GPIO_ACTIVE_HIGH>;
+			default-state = "on";
+		};
+
+		micbias2 {
+			label = "MICBIAS2";
+			gpios = <&gpio TEGRA_GPIO(H, 3) GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+
+		earsel {
+			label = "EAR_SEL";
+			gpios = <&gpio TEGRA_GPIO(I, 4) GPIO_ACTIVE_HIGH>;
 			default-state = "off";
 		};
 	};
