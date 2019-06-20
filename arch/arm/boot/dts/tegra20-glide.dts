@@ -853,8 +853,6 @@
 		i2c-gpio,delay-us = <1>;
 		#address-cells = <1>;
 		#size-cells = <0>;
-		//interrupt-parent = <&gpio>;
-		//interrupts = <TEGRA_GPIO(I, 5) IRQ_TYPE_LEVEL_HIGH>;
 
 		// Use 17040 as 17043 is compatible - no ALRT feature
 		max17043@36 {
@@ -862,8 +860,27 @@
 			reg = <0x36>;
 			interrupt-parent = <&gpio>;
 			interrupts = <TEGRA_GPIO(I, 5) IRQ_TYPE_LEVEL_HIGH>;
+			power-supplies = <&usb_ta_charger>;
+			/* Fuel alert - not supported (for now?) */
+			//interrupt-parent = <&gpio>;
+			//interrupts = <TEGRA_GPIO(I, 5) IRQ_TYPE_LEVEL_HIGH>;
 		};
 	};
+
+	usb_ta_charger: max8922-charger {
+		compatible = "maxim,max8903";
+		chg-gpios = <&stmpegpio 16 GPIO_ACTIVE_LOW>;
+		cen-gpios = <&gpio TEGRA_GPIO(R, 3) GPIO_ACTIVE_HIGH>;
+		uok-gpios = <&gpio TEGRA_GPIO(T, 0) GPIO_ACTIVE_HIGH>;
+		/*
+		 * Original sources also use FSA9480 for USB charger
+		 * detection, but it's on extcon and not GPIO,
+		 * so skip it since dok (GPIO_TA_nCONNECTED) works fine.
+		 * (specified as uok since USB is detected)
+		 */
+
+		charger_supply: otg-vbus {};
+        };
 
 	i2c@7 {
 		compatible = "i2c-gpio";
