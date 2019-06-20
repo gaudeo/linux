@@ -819,7 +819,6 @@
 
 				bbat {
 					regulator-name = "bbat";
-					regulator-always-on;
 				};
 
 				sdby {
