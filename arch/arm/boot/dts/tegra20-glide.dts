@@ -9,8 +9,9 @@
 	compatible = "samsung,i927", "nvidia,tegra20";
 
 	aliases {
-		rtc0 = "/i2c@7000d000/max8907@3c";
-		rtc1 = "/rtc@7000e000";
+		/* MAX8907 RTC seems to be broken here, so use Tegra's */
+		rtc0 = "/rtc@7000e000";
+		rtc1 = "/i2c@7000d000/max8907@3c";
 		serial0 = &uartb;
 		serial1 = &uarta;
 		serial2 = &uartc;
@@ -585,7 +586,26 @@
 		pmic: max8907@3c {
 			compatible = "maxim,max8907";
 			reg = <0x3c>;
-			interrupts = <GIC_SPI 86 IRQ_TYPE_LEVEL_HIGH>;
+			/*
+			 * Ints seem to be broken, even on downstream -
+			 * on Whistler board, which uses the same PMIC,
+			 * they're marked as LEVEL_HIGH, however, this
+			 * makes them always-on, so we get something
+			 * like "irq 301: nobody cared" - no interrupt
+			 * status reg set, BUT irq line is asserted, and
+			 * I don't know how to clear it. Probably it
+			 * should be triggered on edge. Downstream
+			 * charger driver triggers charging interrupt
+			 * on TRIGGER_RISING. Oh, no docs available
+			 * on the net.
+			 *
+			 * Downstream kernel also has broken alarm, but
+			 * time readings are correct.
+			 *
+			 * As a workaround, we use internal Tegra RTC
+			 * as a main RTC.
+			 */
+			interrupts = <GIC_SPI 86 IRQ_TYPE_EDGE_RISING>;
 
 			maxim,system-power-controller;
 
