@@ -578,6 +578,7 @@
 		/* Not supported - no DT binding */
 		/* m5mo@1f {
 			reg = <0x1f>;
+			reset-gpios = <&gpio TEGRA_GPIO(D, 2) GPIO_ACTIVE_HIGH>;
 		}; */
 
 		/* Not supported - no DT binding */
@@ -997,10 +998,48 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		/* Not supported - no driver?/no DT binding? */
-		/* m5mo_pmic@3e {
+		max8893@3e {
+			compatible = "maxim,max8893";
 			reg = <0x3e>;
-		}; */
+
+			regulators {
+				/* Front camera - s5k6aafx, back - m5mo */
+				/* Numbers used to indicate the sequence */
+				front_1_back_1: buck {
+					regulator-name = "cam_isp_core_1v2";
+					regulator-min-microvolt = <1200000>;
+					regulator-max-microvolt = <1200000>;
+				};
+
+				front_4_back_5: ldo1 {
+					regulator-name = "vt_io_1v8,cam_isp_1v8";
+					regulator-min-microvolt = <1800000>;
+					regulator-max-microvolt = <1800000>;
+				};
+
+				front_3_back_4: ldo2 {
+					regulator-name = "vt_core_1v5";
+					regulator-min-microvolt = <1500000>;
+					regulator-max-microvolt = <1500000>;
+				};
+
+				front_5_back_6: ldo3 {
+					regulator-name = "vt_cam_1v8,vt_sensor_io_1v8";
+					regulator-min-microvolt = <1800000>;
+					regulator-max-microvolt = <1800000>;
+				};
+
+				ldo4 {
+					/* not used */
+				};
+
+				back_7: ldo5 {
+					regulator-name = "cam_sensor_io_1v8";
+					regulator-min-microvolt = <1800000>;
+					regulator-max-microvolt = <1800000>;
+				};
+			};
+		};
 	};
 
 	i2c@17 {
@@ -1396,6 +1435,55 @@
 			regulator-max-microvolt = <3300000>;
 			// gpio = <&gpio TEGRA_GPIO(N, 6) GPIO_ACTIVE_HIGH>;
 			// gpio = <&gpio TEGRA_GPIO(B, 2) GPIO_ACTIVE_HIGH>;
+		};
+
+		front_2_back_3: regulator@5 {
+			compatible = "regulator-fixed";
+			reg = <5>;
+			regulator-name = "cam-pmic-en2";
+			/* voltage is unknown */
+			regulator-min-microvolt = <1800000>;
+			regulator-max-microvolt = <1800000>;
+			gpio = <&gpio TEGRA_GPIO(T, 3) GPIO_ACTIVE_HIGH>;
+			enable-active-high;
+		};
+
+		/*
+		 * on m5mo, this needs to be disabled after
+		 * cam-vt-nrst GPIO, but I don't know how to
+		 * write this here properly. Probably will need
+		 * to dance with pinmux?
+		 */
+		front_6_back_8_10: regulator@6 {
+			compatible = "regulator-fixed";
+			reg = <6>;
+			regulator-name = "cam-vt-nstby";
+			/* voltage is unknown */
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+			gpio = <&gpio TEGRA_GPIO(D, 5) GPIO_ACTIVE_HIGH>;
+			enable-active-high;
+		};
+
+		front_7_back_9: regulator@7 {
+			compatible = "regulator-fixed";
+			reg = <7>;
+			regulator-name = "cam-vt-nrst";
+			/* voltage is unknown */
+			regulator-min-microvolt = <1800000>;
+			regulator-max-microvolt = <1800000>;
+			gpio = <&gpio TEGRA_GPIO(T, 4) GPIO_ACTIVE_HIGH>;
+			enable-active-high;
+		};
+
+		back_2: regulator@8 {
+			compatible = "regulator-fixed";
+			reg = <8>;
+			regulator-name = "cam-mega-core-1p2-en";
+			regulator-min-microvolt = <1200000>;
+			regulator-max-microvolt = <1200000>;
+			gpio = <&gpio TEGRA_GPIO(R, 0) GPIO_ACTIVE_HIGH>;
+			enable-active-high;
 		};
 	};
 
