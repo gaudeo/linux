@@ -1173,8 +1173,11 @@
 
 			stmpegpio: stmpe_gpio {
 				compatible = "st,stmpe-gpio";
+				st,norequest-mask = <0x7fff>;
 				gpio-controller;
 				#gpio-cells = <2>;
+				interrupt-controller;
+				#interrupt-cells = <2>;
 			};
 		};
 	};
