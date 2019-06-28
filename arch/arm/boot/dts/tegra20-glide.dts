@@ -46,7 +46,7 @@
 				nvidia,panel = <&panel>;
 			};
 		};
-#if 0
+
 		hdmi@54280000 {
 			status = "okay";
 
@@ -63,7 +63,6 @@
 				};
 			};
 		};
-#endif
 	};
 
 	pinmux@70000014 {
@@ -966,7 +965,7 @@
 		i2c-gpio,delay-us = <5>;
 		#address-cells = <1>;
 		#size-cells = <0>;
-#if 0
+
 		sii9234@39 {
 			compatible = "sil,sii9234";
 			reg = <0x39>;
@@ -984,7 +983,6 @@
 				};
 			};
 		};
-#endif
 	};
 
 	i2c@15 {
