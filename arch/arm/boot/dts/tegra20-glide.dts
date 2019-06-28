@@ -908,12 +908,21 @@
 			compatible = "wlf,wm8994";
 			reg = <0x1a>;
 
+			DBVDD-supply = <&wlf_ldo>;
+			DCVDD-supply = <&wlf_ldo>;
+			AVDD1-supply = <&wlf_ldo>;
+			AVDD2-supply = <&wlf_ldo>;
+			CPVDD-supply = <&wlf_ldo>;
+			SPKVDD1-supply = <&wlf_ldo>;
+			SPKVDD2-supply = <&wlf_ldo>;
+
 			gpio-controller;
 			#gpio-cells = <2>;
 
-			wlf,ldo1ena =  <&gpio TEGRA_GPIO(X, 5) GPIO_ACTIVE_HIGH>;
-			wlf,gpio-cfg = <0xA101 0 0 0 0 0 0 0 0 0 0>;
+			/* Probably doesn't make sense because typoed in driver */
+			wlf,ldoena-always-driven;
 
+			wlf,gpio-cfg = <0xA101 0 0 0 0 0 0 0 0 0 0>;
 		};
 	};
 
@@ -1796,6 +1805,16 @@
 			regulator-min-microvolt = <1200000>;
 			regulator-max-microvolt = <1200000>;
 			gpio = <&gpio TEGRA_GPIO(R, 0) GPIO_ACTIVE_HIGH>;
+			enable-active-high;
+		};
+
+		wlf_ldo: regulator@9 {
+			compatible = "regulator-fixed";
+			reg = <9>;
+			regulator-name = "wlf-wm8994-ldo";
+			gpio = <&gpio TEGRA_GPIO(X, 5) GPIO_ACTIVE_HIGH>;
+			regulator-enable-ramp-delay = <125000>;
+			regulator-boot-on;
 			enable-active-high;
 		};
 	};
