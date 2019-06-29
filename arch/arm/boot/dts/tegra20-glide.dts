@@ -512,6 +512,8 @@
 			mount-matrix = "0", "1", "0",
 				"-1", "0", "0",
 				"0", "0", "-1";
+			vdd-supply = <&vsensor>;
+			vlogic-supply = <&vsensor>;
 
 			i2c-gate {
 				#address-cells = <1>;
@@ -729,12 +731,10 @@
 					regulator-max-microvolt = <3300000>;
 				};
 
-				ldo10 {
+				vsensor: ldo10 {
 					regulator-name = "nvvdd_ldo10,vsensor_1v8";
 					regulator-min-microvolt = <1800000>;
 					regulator-max-microvolt = <1800000>;
-					regulator-always-on;
-					regulator-boot-on;
 				};
 
 				ldo11 {
@@ -893,6 +893,7 @@
 			compatible = "asahi-kasei,ak8975";
 			reg = <0xc>;
 			gpios = <&gpio TEGRA_GPIO(K, 4) GPIO_ACTIVE_HIGH>;
+			vdd-supply = <&vsensor>;
 		};
 	};
 
