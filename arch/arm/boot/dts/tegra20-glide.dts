@@ -1224,24 +1224,6 @@
 			linux,default-trigger = "gpio";
 			default-state = "off";
 		};
-
-		micbias1 {
-			label = "MICBIAS1";
-			gpios = <&gpio TEGRA_GPIO(X, 6) GPIO_ACTIVE_HIGH>;
-			default-state = "on";
-		};
-
-		micbias2 {
-			label = "MICBIAS2";
-			gpios = <&gpio TEGRA_GPIO(H, 3) GPIO_ACTIVE_HIGH>;
-			default-state = "off";
-		};
-
-		earsel {
-			label = "EAR_SEL";
-			gpios = <&gpio TEGRA_GPIO(I, 4) GPIO_ACTIVE_HIGH>;
-			default-state = "off";
-		};
 	};
 
 	pmc@7000e400 {
@@ -1831,5 +1813,21 @@
 			 <&tegra_car TEGRA20_CLK_PLL_A_OUT0>,
 			 <&tegra_car TEGRA20_CLK_CDEV1>;
 		clock-names = "pll_a", "pll_a_out0", "mclk";
+
+		nvidia,ear-sel-gpios = <&gpio TEGRA_GPIO(I, 4) GPIO_ACTIVE_HIGH>;
+		nvidia,int-mic-en-gpios = <&gpio TEGRA_GPIO(X, 6) GPIO_ACTIVE_HIGH>;
+		nvidia,ext-mic-en-gpios = <&gpio TEGRA_GPIO(H, 3) GPIO_ACTIVE_HIGH>;
+		nvidia,hp-det-gpios = <&gpio TEGRA_GPIO(L, 3) GPIO_ACTIVE_HIGH>;
+
+		nvidia,audio-routing =
+			"Int Spk", "SPKOUTLP",
+			"Int Spk", "SPKOUTLN",
+			"Headphone Jack", "HPOUT1L",
+			"Headphone Jack", "HPOUT1R",
+			"Earpiece Spk", "HPOUT2P",
+			"Earpiece Spk", "HPOUT2N",
+			"IN1LP", "Mic Jack",
+			"IN1LN", "Mic Jack";
+		/* TODO: routes for modem and, probably, BT SCO */
 	};
 };
