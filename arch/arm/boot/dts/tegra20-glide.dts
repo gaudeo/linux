@@ -849,7 +849,7 @@
 		compatible = "i2c-gpio";
 		sda-gpios = <&gpio TEGRA_GPIO(O, 0) (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 		scl-gpios = <&gpio TEGRA_GPIO(O, 7) (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-		i2c-gpio,delay-us = <1>;
+		i2c-gpio,delay-us = <5>;
 		#address-cells = <1>;
 		#size-cells = <0>;
 
@@ -901,7 +901,7 @@
 		compatible = "i2c-gpio";
 		sda-gpios = <&gpio TEGRA_GPIO(G, 3) (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 		scl-gpios = <&gpio TEGRA_GPIO(I, 0) (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-		i2c-gpio,delay-us = <1>;
+		i2c-gpio,delay-us = <5>;
 		#address-cells = <1>;
 		#size-cells = <0>;
 
@@ -947,7 +947,7 @@
 		compatible = "i2c-gpio";
 		sda-gpios = <&gpio TEGRA_GPIO(BB, 4) (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 		scl-gpios = <&gpio TEGRA_GPIO(BB, 1) (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-		i2c-gpio,delay-us = <1>;
+		i2c-gpio,delay-us = <5>;
 		#address-cells = <1>;
 		#size-cells = <0>;
 
@@ -999,7 +999,7 @@
 		compatible = "i2c-gpio";
 		sda-gpios = <&gpio TEGRA_GPIO(Y, 3) (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 		scl-gpios = <&gpio TEGRA_GPIO(Y, 1) (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-		i2c-gpio,delay-us = <1>;
+		i2c-gpio,delay-us = <5>;
 		#address-cells = <1>;
 		#size-cells = <0>;
 		interrupt-parent = <&gpio>;
@@ -1019,7 +1019,7 @@
 		compatible = "i2c-gpio";
 		sda-gpios = <&gpio TEGRA_GPIO(L, 7) (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 		scl-gpios = <&gpio TEGRA_GPIO(L, 6) (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-		i2c-gpio,delay-us = <1>;
+		i2c-gpio,delay-us = <5>;
 		#address-cells = <1>;
 		#size-cells = <0>;
 
@@ -1071,7 +1071,7 @@
 		compatible = "i2c-gpio";
 		sda-gpios = <&gpio TEGRA_GPIO(Z, 3) (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 		scl-gpios = <&gpio TEGRA_GPIO(C, 6) (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-		i2c-gpio,delay-us = <1>;
+		i2c-gpio,delay-us = <5>;
 		#address-cells = <1>;
 		#size-cells = <0>;
 
@@ -1102,7 +1102,7 @@
 		compatible = "i2c-gpio";
 		sda-gpios = <&gpio TEGRA_GPIO(T, 6) (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 		scl-gpios = <&gpio TEGRA_GPIO(T, 5) (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-		i2c-gpio,delay-us = <1>;
+		i2c-gpio,delay-us = <5>;
 		#address-cells = <1>;
 		#size-cells = <0>;
 
@@ -1120,7 +1120,7 @@
 		compatible = "i2c-gpio";
 		sda-gpios = <&gpio TEGRA_GPIO(X, 2) (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 		scl-gpios = <&gpio TEGRA_GPIO(X, 0) (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-		i2c-gpio,delay-us = <1>;
+		i2c-gpio,delay-us = <5>;
 		#address-cells = <1>;
 		#size-cells = <0>;
 
