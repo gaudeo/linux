@@ -207,8 +207,7 @@ int mdp4_disable(struct mdp4_kms *mdp4_kms)
 	clk_disable_unprepare(mdp4_kms->clk);
 	if (mdp4_kms->pclk)
 		clk_disable_unprepare(mdp4_kms->pclk);
-	if (mdp4_kms->lut_clk)
-		clk_disable_unprepare(mdp4_kms->lut_clk);
+	clk_disable_unprepare(mdp4_kms->lut_clk);
 	if (mdp4_kms->axi_clk)
 		clk_disable_unprepare(mdp4_kms->axi_clk);
 
@@ -222,8 +221,7 @@ int mdp4_enable(struct mdp4_kms *mdp4_kms)
 	clk_prepare_enable(mdp4_kms->clk);
 	if (mdp4_kms->pclk)
 		clk_prepare_enable(mdp4_kms->pclk);
-	if (mdp4_kms->lut_clk)
-		clk_prepare_enable(mdp4_kms->lut_clk);
+	clk_prepare_enable(mdp4_kms->lut_clk);
 	if (mdp4_kms->axi_clk)
 		clk_prepare_enable(mdp4_kms->axi_clk);
 
@@ -475,13 +473,12 @@ struct msm_kms *mdp4_kms_init(struct drm_device *dev)
 	if (IS_ERR(mdp4_kms->pclk))
 		mdp4_kms->pclk = NULL;
 
-	if (mdp4_kms->rev >= 2) {
-		mdp4_kms->lut_clk = devm_clk_get(&pdev->dev, "lut_clk");
-		if (IS_ERR(mdp4_kms->lut_clk)) {
-			DRM_DEV_ERROR(dev->dev, "failed to get lut_clk\n");
-			ret = PTR_ERR(mdp4_kms->lut_clk);
-			goto fail;
-		}
+	// XXX if (rev >= MDP_REV_42) { ???
+	mdp4_kms->lut_clk = devm_clk_get(&pdev->dev, "lut_clk");
+	if (IS_ERR(mdp4_kms->lut_clk)) {
+		DRM_DEV_ERROR(dev->dev, "failed to get lut_clk\n");
+		ret = PTR_ERR(mdp4_kms->lut_clk);
+		goto fail;
 	}
 
 	mdp4_kms->axi_clk = devm_clk_get(&pdev->dev, "bus_clk");
@@ -492,8 +489,7 @@ struct msm_kms *mdp4_kms_init(struct drm_device *dev)
 	}
 
 	clk_set_rate(mdp4_kms->clk, config->max_clk);
-	if (mdp4_kms->lut_clk)
-		clk_set_rate(mdp4_kms->lut_clk, config->max_clk);
+	clk_set_rate(mdp4_kms->lut_clk, config->max_clk);
 
 	pm_runtime_enable(dev->dev);
 	mdp4_kms->rpm_enabled = true;
