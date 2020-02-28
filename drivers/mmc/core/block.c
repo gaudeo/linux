@@ -2298,6 +2298,22 @@ static inline int mmc_blk_readonly(struct mmc_card *card)
 	       !(card->csd.cmdclass & CCC_BLOCK_WRITE);
 }
 
+static bool mmc_blk_boot_part_scan(struct mmc_blk_data *md,
+				   struct mmc_card *card)
+{
+	if (!(md->area_type & MMC_BLK_DATA_AREA_BOOT))
+		return false;
+
+	/*
+	 * Platform driver shall explicitly allow the boot partitions
+	 * scanning because this is a non-standard behavior.
+	 */
+	if (!card->host->scan_mmc_boot_partitions)
+		return false;
+
+	return true;
+}
+
 static struct mmc_blk_data *mmc_blk_alloc_req(struct mmc_card *card,
 					      struct device *parent,
 					      sector_t size,
@@ -2377,6 +2393,16 @@ static struct mmc_blk_data *mmc_blk_alloc_req(struct mmc_card *card,
 	if (area_type & (MMC_BLK_DATA_AREA_RPMB | MMC_BLK_DATA_AREA_BOOT))
 		md->disk->flags |= GENHD_FL_NO_PART_SCAN
 				   | GENHD_FL_SUPPRESS_PARTITION_INFO;
+
+	/*
+	 * Some embedded devices store FS partition table on a boot eMMC
+	 * partition (NVIDIA Tegra for example).  In this case partition
+	 * scanner will scan the boot partitions, but the found partitions
+	 * won't be assigned to the boot block device.  It's up to a
+	 * partition scanner what to do with the found partitions.
+	 */
+	if (mmc_blk_boot_part_scan(md, card))
+		md->disk->flags |= GENHD_FL_PART_SCAN_ONCE;
 
 	/*
 	 * As discussed on lkml, GENHD_FL_REMOVABLE should:

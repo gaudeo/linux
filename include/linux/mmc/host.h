@@ -471,6 +471,8 @@ struct mmc_host {
 	/* Host Software Queue support */
 	bool			hsq_enabled;
 
+	bool			scan_mmc_boot_partitions;
+
 	unsigned long		private[] ____cacheline_aligned;
 };
 
