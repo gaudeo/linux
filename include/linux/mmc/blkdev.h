@@ -10,5 +10,6 @@ struct mmc_card;
 
 struct mmc_card *mmc_bdev_to_card(struct block_device *bdev);
 int mmc_bdev_to_part_type(struct block_device *bdev);
+int mmc_bdev_to_area_type(struct block_device *bdev);
 
 #endif /* LINUX_MMC_BLOCK_DEVICE_H */
