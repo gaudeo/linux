@@ -748,7 +748,7 @@ static void register_disk(struct device *parent, struct gendisk *disk,
 	}
 
 	/* No minors to use for partitions */
-	if (!disk_part_scan_enabled(disk))
+	if (!disk_part_scan_enabled(disk) && !disk_part_scan_once(disk))
 		goto exit;
 
 	/* No such device (e.g., media were just removed) */

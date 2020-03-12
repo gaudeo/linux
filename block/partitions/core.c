@@ -686,7 +686,7 @@ int blk_add_partitions(struct gendisk *disk, struct block_device *bdev)
 	struct parsed_partitions *state;
 	int ret = -EAGAIN, p, highest;
 
-	if (!disk_part_scan_enabled(disk))
+	if (!disk_part_scan_enabled(disk) && !disk_part_scan_once(disk))
 		return 0;
 
 	state = check_partition(disk, bdev);
@@ -727,6 +727,17 @@ int blk_add_partitions(struct gendisk *disk, struct block_device *bdev)
 		       disk->disk_name);
 		if (disk_unlock_native_capacity(disk))
 			goto out_free_state;
+	}
+
+	/*
+	 * Partitions were found, but they should stay inactive for a
+	 * scan-only disk.
+	 */
+	if (disk_part_scan_once(disk)) {
+		pr_warn("%s: ignoring partition table on scan-only block device\n",
+			disk->disk_name);
+		ret = 0;
+		goto out_free_state;
 	}
 
 	/* tell userspace that the media / partition table may have changed */

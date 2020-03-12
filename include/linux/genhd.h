@@ -134,6 +134,12 @@ struct hd_struct {
  * Implies ``GENHD_FL_SUPPRESS_PARTITION_INFO`` and
  * ``GENHD_FL_NO_PART_SCAN``.
  * Used for multipath devices.
+ *
+ * ``GENHD_FL_PART_SCAN_ONCE`` (0x0800): the block device will be scanned for
+ * partition table presence, but found partition won't be assigned to the
+ * block device.
+ * Used for embedded devices with a non-standard partition table, where
+ * partition table is stored on a separate block device.
  */
 #define GENHD_FL_REMOVABLE			0x0001
 /* 2 is unused (used to be GENHD_FL_DRIVERFS) */
@@ -146,6 +152,7 @@ struct hd_struct {
 #define GENHD_FL_BLOCK_EVENTS_ON_EXCL_WRITE	0x0100
 #define GENHD_FL_NO_PART_SCAN			0x0200
 #define GENHD_FL_HIDDEN				0x0400
+#define GENHD_FL_PART_SCAN_ONCE			0x0800
 
 enum {
 	DISK_EVENT_MEDIA_CHANGE			= 1 << 0, /* media changed */
@@ -244,6 +251,11 @@ static inline bool disk_part_scan_enabled(struct gendisk *disk)
 {
 	return disk_max_parts(disk) > 1 &&
 		!(disk->flags & GENHD_FL_NO_PART_SCAN);
+}
+
+static inline bool disk_part_scan_once(struct gendisk *disk)
+{
+	return !!(disk->flags & GENHD_FL_PART_SCAN_ONCE);
 }
 
 static inline dev_t disk_devt(struct gendisk *disk)
