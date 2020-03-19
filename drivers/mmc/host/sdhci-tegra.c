@@ -100,6 +100,7 @@
 #define NVQUIRK_NEEDS_PAD_CONTROL			BIT(7)
 #define NVQUIRK_DIS_CARD_CLK_CONFIG_TAP			BIT(8)
 #define NVQUIRK_CQHCI_DCMD_R1B_CMD_TIMING		BIT(9)
+#define NVQUIRK_SCAN_BOOT_PARTITIONS			BIT(10)
 
 /* SDMMC CQE Base Address for Tegra Host Ver 4.1 and Higher */
 #define SDHCI_TEGRA_CQE_BASE_ADDR			0xF000
@@ -1304,7 +1305,8 @@ static const struct sdhci_tegra_soc_data soc_data_tegra20 = {
 	.pdata = &sdhci_tegra20_pdata,
 	.dma_mask = DMA_BIT_MASK(32),
 	.nvquirks = NVQUIRK_FORCE_SDHCI_SPEC_200 |
-		    NVQUIRK_ENABLE_BLOCK_GAP_DET,
+		    NVQUIRK_ENABLE_BLOCK_GAP_DET |
+		    NVQUIRK_SCAN_BOOT_PARTITIONS,
 };
 
 static const struct sdhci_pltfm_data sdhci_tegra30_pdata = {
@@ -1333,7 +1335,8 @@ static const struct sdhci_tegra_soc_data soc_data_tegra30 = {
 	.nvquirks = NVQUIRK_ENABLE_SDHCI_SPEC_300 |
 		    NVQUIRK_ENABLE_SDR50 |
 		    NVQUIRK_ENABLE_SDR104 |
-		    NVQUIRK_HAS_PADCALIB,
+		    NVQUIRK_HAS_PADCALIB |
+		    NVQUIRK_SCAN_BOOT_PARTITIONS,
 };
 
 static const struct sdhci_ops tegra114_sdhci_ops = {
@@ -1585,6 +1588,9 @@ static int sdhci_tegra_probe(struct platform_device *pdev)
 
 	/* HW busy detection is supported, but R1B responses are required. */
 	host->mmc->caps |= MMC_CAP_WAIT_WHILE_BUSY | MMC_CAP_NEED_RSP_BUSY;
+
+	if (tegra_host->soc_data->nvquirks & NVQUIRK_SCAN_BOOT_PARTITIONS)
+		host->mmc->scan_mmc_boot_partitions = true;
 
 	tegra_sdhci_parse_dt(host);
 
