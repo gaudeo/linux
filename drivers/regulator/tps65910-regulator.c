@@ -1241,6 +1241,7 @@ static void tps65910_shutdown(struct platform_device *pdev)
 	 * bootloader initializes it, the system requires the rail output
 	 * to be active for booting.
 	 */
+#if 0
 	for (i = 0; i < pmic->num_regulators; i++) {
 		int err;
 		if (!pmic->rdev[i])
@@ -1251,6 +1252,7 @@ static void tps65910_shutdown(struct platform_device *pdev)
 			dev_err(&pdev->dev,
 				"Error in clearing external control\n");
 	}
+#endif
 }
 
 static struct platform_driver tps65910_driver = {
