@@ -16,6 +16,7 @@
 #define pr_fmt(fmt) "tegra-partition: " fmt
 
 #include <linux/blkdev.h>
+#include <linux/init.h>
 #include <linux/kernel.h>
 #include <linux/of.h>
 #include <linux/sizes.h>
@@ -29,6 +30,7 @@
 #include <soc/tegra/common.h>
 #include <soc/tegra/partition.h>
 
+#include "efi.h"
 #include "check.h"
 
 #define TEGRA_PT_SECTOR_SIZE(ptp)	((ptp)->logical_sector_size / SZ_512)
@@ -517,6 +519,32 @@ static const unsigned int tegra_pt_logical_sector_sizes[] = {
 	SZ_4K, SZ_2K,
 };
 
+/*
+ * This allows a kernel command line option 'gpt_sector=<sector>' to
+ * enable GPT header lookup at a non-standard location. This option
+ * is given to kernel by a proprietary bootloader, which is used by
+ * *most* (but not all) of NVIDIA Tegra-based devices.
+ */
+static sector_t tegra_gpt_sector;
+static int __init tegra_gpt_sector_fn(char *str)
+{
+	WARN_ON(kstrtoull(str, 10, &tegra_gpt_sector) < 0);
+	return 1;
+}
+__setup("gpt_sector=", tegra_gpt_sector_fn);
+
+static int tegra_partition_scan_gpt(struct tegra_partition_table_parser *ptp)
+{
+	int ret = 0;
+
+#ifdef CONFIG_EFI_PARTITION
+	force_gpt_sector = tegra_gpt_sector;
+	ret = efi_partition(ptp->state);
+	force_gpt_sector = 0;
+#endif
+	return ret;
+}
+
 int tegra_partition(struct parsed_partitions *state)
 {
 	struct tegra_partition_table_parser ptp = {};
@@ -531,6 +559,10 @@ int tegra_partition(struct parsed_partitions *state)
 	ptp.boot_offset = tegra_partition_table_emmc_boot_offset(&ptp);
 	if (ptp.boot_offset < 0)
 		return 0;
+
+	ret = tegra_partition_scan_gpt(&ptp);
+	if (ret)
+		return ret;
 
 	ptp.pt = kmalloc(SZ_4K, GFP_KERNEL);
 	if (!ptp.pt)
