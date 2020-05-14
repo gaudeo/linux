@@ -103,6 +103,13 @@ force_gpt_fn(char *str)
 }
 __setup("gpt", force_gpt_fn);
 
+/* Used by NVIDIA Tegra partition parser in order to convey a non-standard
+ * location of the GPT entry for lookup. This variable should be set before
+ * efi_partition() invocation in order to instruct parser to look up GPT
+ * entry at the given sector, and it should be unset after completion of
+ * the invocation.
+ */
+sector_t force_gpt_sector;
 
 /**
  * efi_crc32() - EFI version of crc32 function
@@ -620,6 +627,10 @@ static int find_valid_gpt(struct parsed_partitions *state, gpt_header **gpt,
 					 &agpt, &aptes);
         if (!good_agpt && force_gpt)
                 good_agpt = is_gpt_valid(state, lastlba, &agpt, &aptes);
+
+	if (!good_agpt && force_gpt && force_gpt_sector)
+		good_agpt = is_gpt_valid(state, force_gpt_sector,
+					 &agpt, &aptes);
 
         /* The obviously unsuccessful case */
         if (!good_pgpt && !good_agpt)

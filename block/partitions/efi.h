@@ -113,4 +113,6 @@ typedef struct _legacy_mbr {
 	__le16 signature;
 } __packed legacy_mbr;
 
+extern sector_t force_gpt_sector;
+
 #endif
